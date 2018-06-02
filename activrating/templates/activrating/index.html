@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load datetime_filter %}
+
+      {% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <div class="page-header">
+              <h1 class="page-title">
+                Лента новостей
+              </h1>
+            </div>
+            <div class="row row-cards row-deck">
+
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header bg-cyan-light">
+                    <h3 class="card-title">Тренировки</h3>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap bg-cyan-lightest">
+                      <thead>
+                        <tr>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for act in userActivities %}
+                            {% if act.activityType == '1' or act.activityType == '18' or act.activityType == '11' or act.activityType == '9'  %}
+
+                        <tr>
+                          <td class="text-center">
+                            <div class="avatar avatar-xl mr-5 d-block" style="background-image: url({{act.ownerProfileImageUrlMedium}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                          <td><div class="h4 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="/activrating/userprofile/{{ act.activityId }}/" class="text-blue">{{act.activityName}}</a></font></font></div>{{act.ownerFullName}}</td>
+
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.duration|format_datetime}}</font></font></div> Время
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.distance|format_distance}}</font></font></div>
+                            Растояние
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.averageSpeed|temp_average}}</font></font></div>
+                            Средний Темп
+                          </td>
+                          <td><div class="h5 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.startTimeLocal|date}}</font></font></div></td>
+                        </tr>
+                            {% endif %}
+                            {% if act.activityType == '2'  %}
+                         <tr>
+                          <td class="text-center">
+                            <div class="avatar avatar-xl mr-5 d-block" style="background-image: url({{act.ownerProfileImageUrlMedium}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                          <td><div class="h4 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="/activrating/userprofile/{{ act.activityId }}/" class="text-blue">{{act.activityName}}</a></font></font></div>{{act.ownerFullName}}</td>
+
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.duration|format_datetime}}</font></font></div> Время
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.distance|format_distance}}</font></font></div>
+                            Растояние
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.averageSpeed|speed_Kmh}}</font></font></div>
+                            Средняя скорасть
+                          </td>
+                          <td><div class="h5 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.startTimeLocal|date}}</font></font></div></td>
+                        </tr>
+                            {% endif %}
+                            {% if act.activityType == '13' or activityType == '29'  %}
+                         <tr>
+                          <td class="text-center">
+                            <div class="avatar avatar-xl mr-5" style="background-image: url({{act.ownerProfileImageUrlMedium}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                          <td><div class="h4 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="/activrating/userprofile/{{ act.activityId }}/" class="text-blue">{{act.activityName}}</a></font></font></div>{{act.ownerFullName}}</td>
+
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.duration|format_datetime}}</font></font></div> Время
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.calories}}</font></font></div>
+                            Калории
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.averageHR|averHR}}</font></font></div>
+                            Средний пульс
+                          </td>
+                          <td><div class="h5 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.startTimeLocal|date}}</font></font></div></td>
+                        </tr>
+                            {% endif %}
+
+                            {% if act.activityType == '27' %}
+                         <tr>
+                          <td class="text-center">
+                            <div class="avatar avatar-xl mr-5 d-block" style="background-image: url({{act.ownerProfileImageUrlMedium}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                          <td><div class="h4 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="/acivrating/userprofile/{{ act.activityId }}/" class="text-blue">{{act.activityName}}</a></font></font></div>{{act.ownerFullName}}</td>
+
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.duration|format_datetime}}</font></font></div> Время
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.calories}}</font></font></div>
+                            Калории
+                          </td>
+                          <td><div class="h3 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.averageHR}}</font></font></div>
+                            Средний пульс
+                          </td>
+                          <td><div class="h5 m-1">
+                           <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{act.startTimeLocal|date}}</font></font></div></td>
+                        </tr>
+                            {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endblock %}

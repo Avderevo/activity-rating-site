@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load datetime_filter %}
+
+      {% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <div class="page-header">
+              <h1 class="page-title">
+                Участники рейтинга
+              </h1>
+
+            </div>
+            <div class="row row-cards">
+                {% for i in uslist %}
+              <div class="col-sm-6 col-lg-4">
+
+                <div class="card p-4 bg-cyan-lightest">
+
+                  <div class="d-flex align-items-center px-2">
+                     <div class="avatar avatar-xl mr-5 d-block" style="background-image: url({{i.ownerProfileImageUrlMedium}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                    <div>
+                      <div><a href="/activrating/userprofile/{{ i.activityId }}/" class="text-dark">{{i.ownerFullName}}</a></div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+                {% endfor %}
+
+            </div>
+          </div>
+        </div>
+      {% endblock %}

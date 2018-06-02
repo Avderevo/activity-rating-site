@@ -1,0 +1,732 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load datetime_filter %}
+
+      {% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <div class="page-header">
+              <h1 class="page-title">
+                  {{ userActivities.activityName }} <div class= 'h5'>{{ userActivities.startTimeLocal|date }}</div>
+              </h1>
+            </div>
+            <div class="row row-cards">
+            {% if userActivities.activityType == "1" or userActivities.activityType == "18" or userActivities.activityType == "11" or userActivities.activityType == "9" %}
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-clock"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.duration|format_datetime}}</div>
+                    <div class="text-muted mb-4">Время</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevrons-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.distance|format_distance}}</div>
+                    <div class="text-muted mb-4">Растояние</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevron-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageSpeed|temp_average2}}</div>
+                    <div class="text-muted mb-4">Средний темп</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+                      <i class="fe fe-fast-forward"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.maxSpeed|temp_average2}}</div>
+                    <div class="text-muted mb-4">Макс. темп</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-arrow-up-circle"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.elevationGain|elevation}}</div>
+                    <div class="text-muted mb-4">Набор высоты</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-user"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageRunningCadenceInStepsPerMinute|cadens}}</div>
+                    <div class="text-muted mb-4">Каденс шаг/мин</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card">
+
+                  <div class="card card-profile bg-cyan-light">
+                  <div class="card-header" style="background-image: url({% static "activrating/images/user_bg.jpg" %});"></div>
+                  <div class="card-body text-center">
+                    <img class="card-profile-img" src="{{userActivities.ownerProfileImageUrlMedium}}">
+                    <h3 class="mb-3">{{userActivities.ownerFullName}}</h3>
+
+
+                  </div>
+                </div>
+                  <div class="table-responsive">
+                    <table class="table card-table table-striped table-vcenter bg-cyan-lightest">
+
+                      <tbody>
+                        {% for at in act %}
+                        <tr>
+                          <td class="w-1"><span class="avatar" style="background-image: url({{ at.ownerProfileImageUrlMedium }})"></span></td>
+                            <td><div class="h4 m-0">{{at.ownerFullName}}</div></td>
+                            <td><div class="h4 m-0"><a href="/activrating/userprofile/{{ at.activityId }}/" class="text-blue">{{ at.activityName }}</a></div></td>
+                            <td ><div class="h5 m-0"  >{{at.startTimeLocal|date}}</div></td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Средняя частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.averageHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-yellow" style="width: {{ userActivities.averageHR|hrvprocent}}%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Максимальная частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.maxHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-orange" style="width:{{ userActivities.averageHR|hrvprocent}}%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Калории</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.calories|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-green" style="width: 34%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-donut" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-donut', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 37]
+                      				],
+                      				type: 'donut', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["green"],
+                      					'data2': tabler.colors["green-light"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'Maximum',
+                      					'data2': 'Minimum'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-pie" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-pie', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 44],
+                      					['data3', 12],
+                      					['data4', 14]
+                      				],
+                      				type: 'pie', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["blue-darker"],
+                      					'data2': tabler.colors["blue"],
+                      					'data3': tabler.colors["blue-light"],
+                      					'data4': tabler.colors["blue-lighter"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'A',
+                      					'data2': 'B',
+                      					'data3': 'C',
+                      					'data4': 'D'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+
+                </div>
+              </div>
+            {% endif  %}
+            {% if userActivities.activityType == "2" %}
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-clock"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.duration|format_datetime}}</div>
+                    <div class="text-muted mb-4">Время</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevrons-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.distance|format_distance}}</div>
+                    <div class="text-muted mb-4">Растояние</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevron-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageSpeed|speed_Kmh}}</div>
+                    <div class="text-muted mb-4">Средняя скорость</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+                      <i class="fe fe-fast-forward"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.maxSpeed|speed_Kmh}}</div>
+                    <div class="text-muted mb-4">Макс. скорость</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-arrow-up-circle"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.elevationGain|elevation}}</div>
+                    <div class="text-muted mb-4">Набор высоты</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-user"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageBikingCadenceInRevPerMinute|cadens}}</div>
+                    <div class="text-muted mb-4">Каденс об/мин.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card">
+
+                  <div class="card card-profile">
+                  <div class="card-header" style="background-image:url({% static "activrating/images/user_bg.jpg" %});"></div>
+                  <div class="card-body text-center  bg-cyan-light">
+                    <img class="card-profile-img" src="{{userActivities.ownerProfileImageUrlMedium}}">
+                    <h3 class="mb-3">{{userActivities.ownerFullName}}</h3>
+
+
+                  </div>
+                </div>
+                  <div class="table-responsive">
+                    <table class="table card-table table-striped table-vcenter bg-cyan-lightest">
+                      <thead>
+
+                      </thead>
+                      <tbody>
+                        {% for at in act %}
+                        <tr>
+                          <td class="w-1"><span class="avatar" style="background-image: url({{ at.ownerProfileImageUrlMedium }})"></span></td>
+                            <td><div class="h4 m-0">{{at.ownerFullName}}</div></td>
+                            <td><div class="h4 m-0"><a href="/activrating/userprofile/{{ at.activityId }}/" class="text-blue">{{ at.activityName }}</a></div></td>
+                            <td><div class="h4 m-0"  >{{at.startTimeLocal|date}}</div></td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Средняя частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.averageHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-yellow" style="width: 28%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Максимальная частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.maxHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-orange" style="width: 74%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Калории</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.calories|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-green" style="width: 34%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-donut" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-donut', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 37]
+                      				],
+                      				type: 'donut', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["green"],
+                      					'data2': tabler.colors["green-light"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'Maximum',
+                      					'data2': 'Minimum'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-pie" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-pie', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 44],
+                      					['data3', 12],
+                      					['data4', 14]
+                      				],
+                      				type: 'pie', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["blue-darker"],
+                      					'data2': tabler.colors["blue"],
+                      					'data3': tabler.colors["blue-light"],
+                      					'data4': tabler.colors["blue-lighter"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'A',
+                      					'data2': 'B',
+                      					'data3': 'C',
+                      					'data4': 'D'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+
+                </div>
+              </div>
+            {% endif  %}
+            {% if userActivities.activityType == "13" or userActivities.activityType == '29' %}
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-clock"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.duration|format_datetime}}</div>
+                    <div class="text-muted mb-4">Время</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevrons-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.distance|format_distance}}</div>
+                    <div class="text-muted mb-4">Растояние</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-chevron-right"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageSpeed|speed_Kmh}}</div>
+                    <div class="text-muted mb-4">Средняя скорость</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+                      <i class="fe fe-fast-forward"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.maxSpeed|speed_Kmh}}</div>
+                    <div class="text-muted mb-4">Макс. скорость</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-arrow-up-circle"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.elevationGain|elevation}}</div>
+                    <div class="text-muted mb-4">Набор высоты</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-4 col-lg-2">
+                <div class="card">
+                  <div class="card-body p-3 text-center bg-cyan-lightest">
+                    <div class="text-right text-green">
+
+                      <i class="fe fe-user"></i>
+                    </div>
+                    <div class="h2 m-0">{{userActivities.averageBikingCadenceInRevPerMinute|cadens}}</div>
+                    <div class="text-muted mb-4">Каденс об/мин.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="card">
+
+                  <div class="card card-profile">
+                    <div class="card-header" style="background-image: url({% static "activrating/images/user_bg.jpg" %});"></div>
+                    <div class="card-body text-center bg-cyan-light">
+                    <img class="card-profile-img" src="{{userActivities.ownerProfileImageUrlMedium}}">
+                    <h3 class="mb-3">{{userActivities.ownerFullName}}</h3>
+
+
+                  </div>
+                </div>
+                  <div class="table-responsive">
+                    <table class="table card-table table-striped table-vcenter bg-cyan-lightest">
+
+                      <tbody>
+                        {% for at in act %}
+                        <tr>
+                          <td class="w-1"><span class="avatar" style="background-image:url({% static "activrating/images/user_bg.jpg" %});"></span></td>
+                            <td><div class="h4 m-0">{{at.ownerFullName}}</div></td>
+                            <td><div class="h4 m-0"><a href="/activrating/userprofile/{{ at.activityId }}/" class="text-blue">{{ at.activityName }}</a></div></td>
+                            <td><div class="h4 m-0"  >{{at.startTimeLocal|date}}</div></td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Средняя частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.averageHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-yellow" style="width: 28%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Максимальная частота пульса</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.maxHR|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-orange" style="width: 74%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <div class="card-body text-center bg-cyan-lightest">
+                        <div class="h5">Калории</div>
+                        <div class="display-4 font-weight-bold mb-4">{{userActivities.calories|averHR2 }}</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-green" style="width: 34%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-donut" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-donut', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 37]
+                      				],
+                      				type: 'donut', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["green"],
+                      					'data2': tabler.colors["green-light"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'Maximum',
+                      					'data2': 'Minimum'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-pie" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-pie', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 44],
+                      					['data3', 12],
+                      					['data4', 14]
+                      				],
+                      				type: 'pie', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["blue-darker"],
+                      					'data2': tabler.colors["blue"],
+                      					'data3': tabler.colors["blue-light"],
+                      					'data4': tabler.colors["blue-lighter"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'A',
+                      					'data2': 'B',
+                      					'data3': 'C',
+                      					'data4': 'D'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+
+                </div>
+              </div>
+            {% endif  %}
+
+            </div>
+
+          </div>
+        </div>
+      {% endblock %}

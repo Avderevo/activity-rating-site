@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load datetime_filter %}
+      {% block content %}
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <div class="page-header">
+              <h1 class="page-title">
+                Статистика тренировок
+              </h1>
+              <div class="nav-item d-none d-md-flex ">
+                  <a href="{% url 'activrating:record' 6 %}" class="btn btn-pill btn-success" >Неделя</a>
+              </div>
+              <div class="nav-item d-none d-md-flex ">
+                  <a href="{% url 'activrating:record' 29 %}" class="btn btn-pill btn-success" >Месяц</a>
+              </div>
+            </div>
+
+            <div class="row row-cards row-deck">
+
+              <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                  <div class="card-header bg-cyan-light ">
+                    <h3 class="card-title">Бег</h3>
+
+                  </div>
+
+                  <table class="table card-table bg-cyan-lightest">
+                    <tbody>
+                      {% for i in rlist %}
+
+                      <tr>
+                      <td class="text-center">
+                            <div class="avatar mr-5 d-block" style="background-image: url({{i.2}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                      <td class="text-left"><a href="/activrating/userprofile/" class="text-dark">{{i.1}}</a></td>
+                      <td class="text-left">{{i.0|format_distance}}</td>
+                    </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                  <div class="card-header bg-orange-light">
+                    <h3 class="card-title">Велосипед</h3>
+                  </div>
+
+                  <table class="table card-table table-vcenter text-nowrap bg-orange-lightest">
+                      {% for i in blist %}
+
+                    <tr>
+                      <td class="text-center">
+                            <div class="avatar mr-5 d-block" style="background-image: url({{i.2}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                      <td class="text-left"><a href="/activrating/userprofile/" class="text-dark">{{i.1}}</a></td>
+                      <td class="text-left">{{i.0|format_distance}}</td>
+                    </tr>
+                      {% endfor %}
+
+                  </table>
+
+
+
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                  <div class="card-header bg-yellow-light">
+                    <h3 class="card-title">Общее время тренировок</h3>
+                  </div>
+
+                  <table class="table card-table table-striped bg-yellow-lightest">
+                      {% for i in hlist %}
+
+                    <tr>
+                      <td class="text-center">
+                            <div class="avatar mr-5 d-block" style="background-image: url({{i.2}})">
+                              <span class="avatar-status bg-green"></span>
+                            </div>
+                          </td>
+                      <td class="text-left"><a href="/activrating/userprofile/" class="text-dark">{{i.1}}</a></td>
+                      <td class="text-left">{{i.0|format_datetime}}</td>
+                    </tr>
+                      {% endfor %}
+
+                  </table>
+
+
+
+                </div>
+              </div>
+
+            </div>
+            <div class="row row-cards row-deck">
+              <div class="col-sm-6 col-lg-4">
+
+                <div class="card">
+                  <div class="card-header bg-cyan-light ">
+                    <h3 class="card-title">Бег</h3>
+                  </div>
+
+                    <a href="#" class="mb-3">
+
+                    <img src="{% static graf.0 %}" alt="Бег" class='card-img'>
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                  <div class="card-header bg-orange-light ">
+                    <h3 class="card-title">Велосипед</h3>
+                  </div>
+                    <a href="#" class="mb-3">
+                    <img src="{% static graf.1 %}" alt="Бег" class='card-img'>
+                  </a>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <div class="card">
+                  <div class="card-header bg-yellow-light ">
+                    <h3 class="card-title">Общее время</h3>
+                  </div>
+                    <a href="#" class="mb-3">
+                    <img src="{% static graf.2 %}" alt="Бег" class='card-img'>
+                  </a>
+
+
+                </div>
+              </div>
+
+
+
+            </div>
+
+          </div>
+        </div>
+      {% endblock %}
